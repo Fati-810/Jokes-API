@@ -9,10 +9,6 @@ The Joke API Web App is a lightweight, interactive web application that allows u
 
 ✍️ Submit your own Joke with category.
 
-🛠️ Edit existing Jokes (PUT/PATCH).
-
-🗑️ Delete Jokes individually or in bulk.
-
 📱 Responsive design for desktop and mobile use.
 
  # Technical Overview: (Behind the Scenes)
