@@ -65,7 +65,13 @@
       <button onclick="getRandomJoke()">Get Random</button>
       <div id="randomJoke" class="joke"></div>
     </div>
-
+    
+    <div class="section">
+  <h2>Search Joke by ID</h2>
+  <input id="searchJokeId" type="number" placeholder="Enter Joke ID">
+  <button onclick="searchJoke()">Search Joke</button>
+  <div id="searchResponse" class="joke"></div>
+</div>
     <div class="section">
       <h2>Filter Jokes by Type</h2>
       <select id="filterType">
@@ -79,6 +85,45 @@
       </select>
       <button onclick="filterJokes()">Filter</button>
       <div id="filteredJokes" class="joke"></div>
+    </div>
+     <div class="section">
+      <h2>Update a Joke (PUT)</h2>
+      <input id="putJokeId" type="number" placeholder="Joke ID">
+      <textarea id="putJokeText" rows="3" placeholder="New joke text"></textarea>
+      <select id="putJokeType">
+        <option value="Puns">Puns</option>
+        <option value="Science">Science</option>
+        <option value="Wordplay">Wordplay</option>
+        <option value="Movies">Movies</option>
+        <option value="Math">Math</option>
+        <option value="Food">Food</option>
+        <option value="Sports">Sports</option>
+      </select>
+      <button onclick="updateJokePut()">Update Joke (PUT)</button>
+      <div id="putResponse" class="joke"></div>
+    </div>
+    <div class="section">
+      <h2>Update a Joke (PATCH)</h2>
+      <input id="patchJokeId" type="number" placeholder="Joke ID">
+      <textarea id="patchJokeText" rows="3" placeholder="New joke text (optional)"></textarea>
+      <select id="patchJokeType">
+        <option value="">Select new type (optional)</option>
+        <option value="Puns">Puns</option>
+        <option value="Science">Science</option>
+        <option value="Wordplay">Wordplay</option>
+        <option value="Movies">Movies</option>
+        <option value="Math">Math</option>
+        <option value="Food">Food</option>
+        <option value="Sports">Sports</option>
+      </select>
+      <button onclick="updateJokePatch()">Update Joke (PATCH)</button>
+      <div id="patchResponse" class="joke"></div>
+    </div>
+    <div class="section">
+      <h2>Delete a Joke</h2>
+      <input id="deleteJokeId" type="number" placeholder="Enter Joke ID to delete">
+      <button onclick="deleteJoke()">Delete Joke</button>
+      <div id="deleteResponse" class="joke"></div>
     </div>
 
     <div class="section">
@@ -96,7 +141,7 @@
       <button onclick="submitJoke()">Submit Joke</button>
       <div id="submitResponse" class="joke"></div>
     </div>
-  </div>
+</div> <!-- Closing the main container div -->
 
   <script>
     const API_BASE = window.location.origin;
@@ -106,7 +151,6 @@
       const joke = await res.json();
       document.getElementById("randomJoke").innerText = joke.jokeText;
     }
-
     async function filterJokes() {
       const type = document.getElementById("filterType").value;
       const res = await fetch(`${API_BASE}/filter?type=${type}`);
@@ -129,6 +173,75 @@
       const response = await res.json();
       document.getElementById("submitResponse").innerText = `Joke added with ID: ${response.id}`;
     }
+  
+    async function deleteJoke() {
+      const id = document.getElementById("deleteJokeId").value;
+      const res = await fetch(`${API_BASE}/jokes/${id}`, {
+        method: "DELETE"
+      });
+      const text = res.ok ? `Joke with ID ${id} deleted successfully.` : (await res.json()).error;
+      document.getElementById("deleteResponse").innerText = text;
+    }
+
+async function updateJokePut() {
+  const id = document.getElementById("putJokeId").value;
+  const text = document.getElementById("putJokeText").value;
+  const type = document.getElementById("putJokeType").value;
+
+  const res = await fetch(`${API_BASE}/jokes/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: `text=${encodeURIComponent(text)}&type=${encodeURIComponent(type)}`
+  });
+
+  if (res.ok) {
+    const result = await res.json();
+    document.getElementById("putResponse").innerText = `Joke updated: ${result.jokeText}`;
+  } else {
+    const error = await res.json();
+    document.getElementById("putResponse").innerText = error.error;
+  }
+}
+async function updateJokePatch() {
+  const id = document.getElementById("patchJokeId").value;
+  const text = document.getElementById("patchJokeText").value;
+  const type = document.getElementById("patchJokeType").value;
+
+  const params = new URLSearchParams();
+  if (text) params.append("text", text);
+  if (type) params.append("type", type);
+
+  const res = await fetch(`${API_BASE}/jokes/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: params.toString()
+  });
+
+  if (res.ok) {
+    const result = await res.json();
+    document.getElementById("patchResponse").innerText = `Joke updated: ${result.jokeText}`;
+  } else {
+    const error = await res.json();
+    document.getElementById("patchResponse").innerText = error.error;
+  }
+}
+      async function searchJoke() {
+  const id = document.getElementById("searchJokeId").value;
+
+  const res = await fetch(`${API_BASE}/jokes/${id}`);
+
+  if (res.ok) {
+    const joke = await res.json();
+    document.getElementById("searchResponse").innerText = joke.jokeText;
+  } else {
+    const error = await res.json();
+    document.getElementById("searchResponse").innerText = error.error || "Joke not found.";
+  }
+}
   </script>
 </body>
 </html>
