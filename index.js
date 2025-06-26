@@ -18,8 +18,13 @@ app.get("/random", (req, res) => {
 app.get("/jokes/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const foundJoke = jokes.find((joke) => joke.id === id);
-  res.json(foundJoke);
+  if (foundJoke) {
+    res.json(foundJoke);
+  } else {
+    res.status(404).json({ error: `Joke with id ${id} not found.` });
+  }
 });
+
 
 //Filter jokes by type
 app.get("/filter", (req, res) => {
@@ -43,32 +48,39 @@ app.post("/jokes", (req, res) => {
 //Put a joke
 app.put("/jokes/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const replacementJoke = {
-    id: id,
-    jokeText: req.body.text,
-    jokeType: req.body.type,
-  };
-
   const searchIndex = jokes.findIndex((joke) => joke.id === id);
 
-  jokes[searchIndex] = replacementJoke;
-  // console.log(jokes);
-  res.json(replacementJoke);
+  if (searchIndex > -1) {
+    const replacementJoke = {
+      id: id,
+      jokeText: req.body.text,
+      jokeType: req.body.type,
+    };
+    jokes[searchIndex] = replacementJoke;
+    res.json(replacementJoke);
+  } else {
+    res.status(404).json({ error: `Joke with id ${id} not found.` });
+  }
 });
+
 
 //Patch a joke
 app.patch("/jokes/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const existingJoke = jokes.find((joke) => joke.id === id);
-  const replacementJoke = {
-    id: id,
-    jokeText: req.body.text || existingJoke.jokeText,
-    jokeType: req.body.type || existingJoke.jokeType,
-  };
   const searchIndex = jokes.findIndex((joke) => joke.id === id);
-  jokes[searchIndex] = replacementJoke;
-  console.log(jokes[searchIndex]);
-  res.json(replacementJoke);
+
+  if (searchIndex > -1) {
+    const existingJoke = jokes[searchIndex];
+    const replacementJoke = {
+      id: id,
+      jokeText: req.body.text || existingJoke.jokeText,
+      jokeType: req.body.type || existingJoke.jokeType,
+    };
+    jokes[searchIndex] = replacementJoke;
+    res.json(replacementJoke);
+  } else {
+    res.status(404).json({ error: `Joke with id ${id} not found.` });
+  }
 });
 
 //DELETE Specific joke
