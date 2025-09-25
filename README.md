@@ -1,5 +1,5 @@
 # Jokes-API
-The Joke API Web App is a lightweight, interactive web application that allows users to browse, filter, and contribute jokes by category. It offers a fun and user-friendly interface, powered by a custom-built backend using Node.js and Express.
+The Joke API Web App is a **lightweight**, **interactive web application** that allows users to browse, filter, and contribute jokes by category. It offers a **fun** and **user-friendly interface**, powered by a **custom-built backend** using Node.js and Express.
 
 # Features:
 
