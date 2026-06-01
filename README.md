@@ -13,11 +13,11 @@ The Joke API Web App is a **lightweight**, **interactive web application** that 
 
  ## Technical Overview: (Behind the Scenes)
  
-Frontend: HTML, CSS, and vanilla JavaScript create a responsive interface for fetching and submitting jokes.
+**Frontend:** HTML, CSS, and vanilla JavaScript create a responsive interface for fetching and submitting jokes.
 
-Backend: Node.js with Express framework handles API endpoints for GET, POST, PUT, PATCH, and DELETE operations.
+**Backend:** Node.js with Express framework handles API endpoints for GET, POST, PUT, PATCH, and DELETE operations.
 
-Data Handling: Jokes are managed in-memory as an array of objects, each containing id, jokeText, and jokeType.
+**Data Handling:** Jokes are managed in-memory as an array of objects, each containing id, jokeText, and jokeType.
 
 ## Preview:
 https://jokes-api-ws93.onrender.com/
@@ -25,7 +25,7 @@ https://jokes-api-ws93.onrender.com/
 ## Contact:
 If you'd like to see more of my work, connect with me through my portfolio:
 
-**Developer:** Fatimah Ali  
+**Developer:** *Fatimah Ali* 
 **Website:** https://fatimahdigitaledge.com  
 **GitHub:** https://github.com/Fati-810
 
